@@ -1,49 +1,78 @@
 package hospital.main;
 
+import hospital.exception.HospitalException;
 import hospital.model.Patient;
 import hospital.service.PatientService;
-
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
         PatientService service = new PatientService();
 
-        // ADD three patients (IDs are given automatically)
-        service.addPatient("Arjun Kumar", 34, "Male", "9876543210",
-                "12 Gandhi Street, Coimbatore", "B+", "Diabetes");
-        service.addPatient("Meena Raj", 28, "Female", "9123456780",
-                "45 Lake View Road, Sulur", "O+", "Migraine");
-        service.addPatient("Ravi Shankar", 45, "Male", "9988776655",
-                "7 Temple Lane, Peelamedu", "A-", "Hypertension");
+        // Each test is inside try/catch so one error does not stop the program.
+        // catch (HospitalException e) catches InvalidInput AND PatientNotFound (inheritance!)
 
-        System.out.println("===== ALL PATIENTS =====");
-        service.viewAll();
-
-        System.out.println("===== SEARCH BY ID 102 =====");
-        Patient found = service.searchPatient(102);   // int version
-        if (found != null) {
-            found.displayDetails();
+        System.out.println("--- Test 1: valid patient ---");
+        try {
+            Patient p = service.addPatient("Arjun Kumar", 34, "Male", "9876543210",
+                    "12 Gandhi Street, Coimbatore", "B+", "Diabetes");
+            System.out.println("Added with ID " + p.getId());
+        } catch (HospitalException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n===== SEARCH BY NAME 'ravi' =====");
-        ArrayList<Patient> matches = service.searchPatient("ravi");   // String version
-        for (Patient p : matches) {
-            p.displayDetails();
+        System.out.println("\n--- Test 2: age -5 ---");
+        try {
+            service.addPatient("Meena Raj", -5, "Female", "9123456780",
+                    "45 Lake View Road", "O+", "Migraine");
+        } catch (HospitalException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n===== DELETE ID 101 =====");
-        if (service.deletePatient(101)) {
-            System.out.println("Patient 101 deleted.");
+        System.out.println("\n--- Test 3: phone 12345 ---");
+        try {
+            service.addPatient("Meena Raj", 28, "Female", "12345",
+                    "45 Lake View Road", "O+", "Migraine");
+        } catch (HospitalException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n===== SEARCH ID 999 (does not exist) =====");
-        if (service.searchPatient(999) == null) {
-            System.out.println("Patient not found.");
+        System.out.println("\n--- Test 4: empty name ---");
+        try {
+            service.addPatient("   ", 28, "Female", "9123456780",
+                    "45 Lake View Road", "O+", "Migraine");
+        } catch (HospitalException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n===== PATIENTS AFTER DELETE =====");
+        System.out.println("\n--- Test 5: blood group Z+ ---");
+        try {
+            service.addPatient("Meena Raj", 28, "Female", "9123456780",
+                    "45 Lake View Road", "Z+", "Migraine");
+        } catch (HospitalException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 6: search ID 999 ---");
+        try {
+            service.searchPatient(999).displayDetails();
+        } catch (HospitalException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 7: delete ID 101 then search it ---");
+        try {
+            service.deletePatient(101);
+            System.out.println("Deleted patient 101.");
+            service.searchPatient(101);
+        } catch (HospitalException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            // finally ALWAYS runs, whether there was an error or not
+            System.out.println("(finally block: this test is finished)");
+        }
+
+        System.out.println("\n--- Final list ---");
         service.viewAll();
     }
 }
