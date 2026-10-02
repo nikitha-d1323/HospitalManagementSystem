@@ -16,9 +16,15 @@ public class InputValidator {
         return name.trim();
     }
 
+    // METHOD OVERLOADING (1): default range 0 to 120 (used for patients)
     public static int validateAge(int age) throws InvalidInputException {
-        if (age < 0 || age > 120) {
-            throw new InvalidInputException("Age must be between 0 and 120.");
+        return validateAge(age, 0, 120);
+    }
+
+    // METHOD OVERLOADING (2): your own range (doctors use 22 to 80)
+    public static int validateAge(int age, int min, int max) throws InvalidInputException {
+        if (age < min || age > max) {
+            throw new InvalidInputException("Age must be between " + min + " and " + max + ".");
         }
         return age;
     }
@@ -40,5 +46,21 @@ public class InputValidator {
             }
         }
         throw new InvalidInputException("Blood group must be one of A+, A-, B+, B-, AB+, AB-, O+, O-.");
+    }
+
+    // any text field that must not be empty (specialization, address ...)
+    public static String validateText(String text, String fieldName) throws InvalidInputException {
+        if (text == null || text.trim().isEmpty()) {
+            throw new InvalidInputException(fieldName + " cannot be empty.");
+        }
+        return text.trim();
+    }
+
+    // numbers that must be greater than zero (fee)
+    public static int validatePositive(int value, String fieldName) throws InvalidInputException {
+        if (value <= 0) {
+            throw new InvalidInputException(fieldName + " must be greater than zero.");
+        }
+        return value;
     }
 }

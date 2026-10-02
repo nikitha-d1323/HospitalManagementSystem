@@ -15,6 +15,11 @@ public class Doctor extends Person {
         this.consultationFee = consultationFee;
     }
 
+    // getters (the service needs the specialization for searching)
+    public String getSpecialization() { return specialization; }
+    public int getExperience() { return experience; }
+    public double getConsultationFee() { return consultationFee; }
+
     // Doctor's own version of displayDetails (overriding)
     @Override
     public void displayDetails() {
