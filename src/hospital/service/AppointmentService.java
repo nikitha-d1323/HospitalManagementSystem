@@ -101,8 +101,9 @@ public class AppointmentService {
 
     public void cancelAppointment(int id) throws AppointmentException {
         Appointment appointment = searchAppointment(id);
-        if (!appointment.isActive()) {
-            throw new AppointmentException("Appointment " + id + " is already cancelled.");
+                if (!appointment.isActive()) {
+            throw new AppointmentException("Appointment " + id + " cannot be cancelled (status: "
+                    + appointment.getStatus() + ").");
         }
         appointment.cancel();     // method from the Schedulable interface
     }

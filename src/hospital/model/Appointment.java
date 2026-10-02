@@ -10,7 +10,7 @@ public class Appointment implements Schedulable {
 
     // enum = a fixed list of allowed values (safer than typing "scheduled" as text)
     public enum Status {
-        SCHEDULED, CANCELLED
+        SCHEDULED, COMPLETED, CANCELLED
     }
 
     private int appointmentId;
@@ -40,6 +40,11 @@ public class Appointment implements Schedulable {
     public LocalTime getTime() { return time; }
     public String getReason() { return reason; }
     public Status getStatus() { return status; }
+
+    // called by billing: the visit is over
+    public void complete() {
+        status = Status.COMPLETED;
+    }
 
     // ----- the 3 methods promised by the Schedulable interface -----
     @Override
