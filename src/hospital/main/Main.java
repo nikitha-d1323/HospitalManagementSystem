@@ -1,29 +1,49 @@
 package hospital.main;
 
-import hospital.model.Doctor;
 import hospital.model.Patient;
-import hospital.model.Person;
-import hospital.model.Staff;
+import hospital.service.PatientService;
 
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
-        // A list that can hold ANY kind of Person
-        ArrayList<Person> people = new ArrayList<>();
+        PatientService service = new PatientService();
 
-        people.add(new Patient(101, "Arjun Kumar", 34, "Male", "9876543210",
-                "12 Gandhi Street, Coimbatore", "B+", "Diabetes"));
-        people.add(new Doctor(201, "Dr. Anita Sharma", 42, "Female", "9811122233",
-                "Cardiology", 15, 800));
-        people.add(new Staff(301, "Sunita Devi", 30, "Female", "9844455566",
-                "Nurse", 28000));
+        // ADD three patients (IDs are given automatically)
+        service.addPatient("Arjun Kumar", 34, "Male", "9876543210",
+                "12 Gandhi Street, Coimbatore", "B+", "Diabetes");
+        service.addPatient("Meena Raj", 28, "Female", "9123456780",
+                "45 Lake View Road, Sulur", "O+", "Migraine");
+        service.addPatient("Ravi Shankar", 45, "Male", "9988776655",
+                "7 Temple Lane, Peelamedu", "A-", "Hypertension");
 
-        // POLYMORPHISM: same call, different result for each object
-        for (Person person : people) {
-            person.displayDetails();
-            System.out.println();
+        System.out.println("===== ALL PATIENTS =====");
+        service.viewAll();
+
+        System.out.println("===== SEARCH BY ID 102 =====");
+        Patient found = service.searchPatient(102);   // int version
+        if (found != null) {
+            found.displayDetails();
         }
+
+        System.out.println("\n===== SEARCH BY NAME 'ravi' =====");
+        ArrayList<Patient> matches = service.searchPatient("ravi");   // String version
+        for (Patient p : matches) {
+            p.displayDetails();
+        }
+
+        System.out.println("\n===== DELETE ID 101 =====");
+        if (service.deletePatient(101)) {
+            System.out.println("Patient 101 deleted.");
+        }
+
+        System.out.println("\n===== SEARCH ID 999 (does not exist) =====");
+        if (service.searchPatient(999) == null) {
+            System.out.println("Patient not found.");
+        }
+
+        System.out.println("\n===== PATIENTS AFTER DELETE =====");
+        service.viewAll();
     }
 }
