@@ -1,10 +1,14 @@
 package hospital.main;
 
+import hospital.service.AppointmentService;
 import hospital.service.DoctorService;
 import hospital.service.PatientService;
+import hospital.ui.AppointmentMenu;
 import hospital.ui.DoctorMenu;
 import hospital.ui.PatientMenu;
 import hospital.util.ConsoleInput;
+
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,8 +17,12 @@ public class Main {
         ConsoleInput input = new ConsoleInput();
         PatientService patientService = new PatientService();
         DoctorService doctorService = new DoctorService();
+        // AppointmentService needs the other two services, so we pass them in
+        AppointmentService appointmentService = new AppointmentService(patientService, doctorService);
+
         PatientMenu patientMenu = new PatientMenu(patientService, input);
         DoctorMenu doctorMenu = new DoctorMenu(doctorService, input);
+        AppointmentMenu appointmentMenu = new AppointmentMenu(appointmentService, input);
 
         // some starting data so the demo is not empty
         try {
@@ -25,6 +33,11 @@ public class Main {
 
             doctorService.addDoctor("Dr. Anita Sharma", 42, "Female", "9811122233", "Cardiology", 15, 800);
             doctorService.addDoctor("Dr. Vikram Rao", 38, "Male", "9822233344", "Neurology", 11, 700);
+
+            // dates are calculated from today, so they are always in the future
+            String soon = LocalDate.now().plusDays(2).toString();
+            appointmentService.bookAppointment(101, 201, soon, "10:00", "Diabetes follow-up");
+            appointmentService.bookAppointment(102, 202, soon, "11:30", "Recurring headaches");
         } catch (Exception e) {
             System.out.println("Could not load sample data: " + e.getMessage());
         }
@@ -36,8 +49,9 @@ public class Main {
             System.out.println("========================================");
             System.out.println("1. Patient Management");
             System.out.println("2. Doctor Management");
-            System.out.println("3. Exit");
-            int choice = input.readInt("Enter your choice: ", 1, 3);
+            System.out.println("3. Appointment Management");
+            System.out.println("4. Exit");
+            int choice = input.readInt("Enter your choice: ", 1, 4);
 
             switch (choice) {
                 case 1:
@@ -45,6 +59,9 @@ public class Main {
                     break;
                 case 2:
                     doctorMenu.show();
+                    break;
+                case 3:
+                    appointmentMenu.show();
                     break;
                 default:
                     running = false;
