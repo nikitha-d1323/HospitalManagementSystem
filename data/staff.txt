@@ -1,0 +1,2 @@
+301|Sunita Devi|30|Female|9844455566|Nurse|28000.0
+302|Karthik S|26|Male|9855566677|Receptionist|22000.0

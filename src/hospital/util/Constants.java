@@ -13,6 +13,7 @@ public final class Constants {
     public static final String DATA_DIR = "data";
     public static final String PATIENT_FILE = "patients.txt";
     public static final String DOCTOR_FILE = "doctors.txt";
+    public static final String STAFF_FILE = "staff.txt";
     public static final String APPOINTMENT_FILE = "appointments.txt";
     public static final String BILL_FILE = "bills.txt";
     public static final String DELIMITER = "|";          // separates the fields in one line

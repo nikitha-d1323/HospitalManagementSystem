@@ -1,0 +1,2 @@
+101|Arjun Kumar|34|Male|9876543210|12 Gandhi Street, Coimbatore|B+|Diabetes
+102|Meena Raj|28|Female|9123456780|45 Lake View Road, Sulur|O+|Migraine

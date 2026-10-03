@@ -5,6 +5,7 @@ import hospital.model.Appointment;
 import hospital.model.Bill;
 import hospital.model.Doctor;
 import hospital.model.Patient;
+import hospital.model.Staff;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -122,6 +123,18 @@ public class FileHandler {
                 list.add(Bill.fromFileString(line));
             } catch (IllegalArgumentException e) {
                 System.out.println("  ! Skipped a damaged line in " + Constants.BILL_FILE + ": " + line);
+            }
+        }
+        return list;
+    }
+    
+    public List<Staff> loadStaff() {
+        List<Staff> list = new ArrayList<>();
+        for (String line : readLines(Constants.STAFF_FILE)) {
+            try {
+                list.add(Staff.fromFileString(line));
+            } catch (IllegalArgumentException e) {
+                System.out.println("  ! Skipped a damaged line in " + Constants.STAFF_FILE + ": " + line);
             }
         }
         return list;
