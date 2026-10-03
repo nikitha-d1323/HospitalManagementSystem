@@ -97,4 +97,17 @@ public class BillingService {
             return "(removed)";
         }
     }
+    
+    // ---- used by file handling ----
+    public ArrayList<Bill> getAllBills() {
+        return bills;
+    }
+
+    // adds a bill read from the file and keeps the ID counter correct
+    public void addLoaded(Bill bill) {
+        bills.add(bill);
+        if (bill.getBillId() >= nextId) {
+            nextId = bill.getBillId() + 1;
+        }
+    }
 }

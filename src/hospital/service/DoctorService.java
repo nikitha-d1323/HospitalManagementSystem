@@ -69,4 +69,17 @@ public class DoctorService {
         Doctor doctor = searchDoctor(id);
         doctors.remove(doctor);
     }
+    
+    // ---- used by file handling ----
+    public ArrayList<Doctor> getAllDoctors() {
+        return doctors;
+    }
+
+    // adds a doctor read from the file and keeps the ID counter correct
+    public void addLoaded(Doctor doctor) {
+        doctors.add(doctor);
+        if (doctor.getId() >= nextId) {
+            nextId = doctor.getId() + 1;
+        }
+    }
 }

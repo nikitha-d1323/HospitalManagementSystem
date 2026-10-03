@@ -67,4 +67,17 @@ public class PatientService {
         Patient patient = searchPatient(id); // throws if missing
         patients.remove(patient);
     }
+    
+    // ---- used by file handling ----
+    public ArrayList<Patient> getAllPatients() {
+        return patients;
+    }
+
+    // adds a patient read from the file and keeps the ID counter correct
+    public void addLoaded(Patient patient) {
+        patients.add(patient);
+        if (patient.getId() >= nextId) {
+            nextId = patient.getId() + 1;
+        }
+    }
 }

@@ -124,4 +124,17 @@ public class AppointmentService {
             return "(removed)";
         }
     }
+    
+    // ---- used by file handling ----
+    public ArrayList<Appointment> getAllAppointments() {
+        return appointments;
+    }
+
+    // adds an appointment read from the file and keeps the ID counter correct
+    public void addLoaded(Appointment appointment) {
+        appointments.add(appointment);
+        if (appointment.getAppointmentId() >= nextId) {
+            nextId = appointment.getAppointmentId() + 1;
+        }
+    }
 }

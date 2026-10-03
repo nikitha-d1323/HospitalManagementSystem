@@ -1,7 +1,11 @@
 package hospital.model;
 
+import hospital.interfaces.FileStorable;
+import hospital.util.Constants;
+
 // "abstract" = we never create a plain Person, only Patient, Doctor, Staff
-public abstract class Person {
+// It also implements FileStorable, so every person can be saved in a file.
+public abstract class Person implements FileStorable {
 
     // private = ENCAPSULATION: other classes cannot touch these directly
     private int id;
@@ -33,5 +37,11 @@ public abstract class Person {
     // helper that children can reuse
     protected String basicInfo() {
         return "ID: " + id + " | " + name + " | Age: " + age + " | " + gender + " | Ph: " + phone;
+    }
+
+    // helper for files: the common fields as one piece of text, e.g. 101|Arjun Kumar|34|Male|9876543210
+    protected String basicFileString() {
+        return id + Constants.DELIMITER + name + Constants.DELIMITER + age + Constants.DELIMITER
+                + gender + Constants.DELIMITER + phone;
     }
 }
